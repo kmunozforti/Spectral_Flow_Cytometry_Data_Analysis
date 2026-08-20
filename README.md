@@ -1,187 +1,138 @@
 # Spectral Flow Cytometry Data Analysis
 
-## Publication Summary
+[![DOI](https://img.shields.io/badge/DOI-10.4049%2Fjimmunol.2400370-blue)](https://doi.org/10.4049/jimmunol.2400370)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.11-blue)](https://www.python.org/)
 
-This repository accompanies the paper:
-**"Development of a Spectral Flow Cytometry Analysis Pipeline for High-dimensional Immune Cell Characterization"**
+Analysis code for the spectral flow cytometry pipeline described in:
 
-Published in *The Journal of Immunology*, December 1, 2024.
+> Vardaman D III\*, **Ali MA**\*, Siam MHB, Bolding C, Tidwell H, Stephens HR, Patil M, Tyrrell DJ.
+> *Development of a Spectral Flow Cytometry Analysis Pipeline for High-Dimensional Immune Cell Characterization.*
+> The Journal of Immunology, 2024; 213(11): 1713–1724.
+> [10.4049/jimmunol.2400370](https://doi.org/10.4049/jimmunol.2400370)
+>
+> \* These authors contributed equally.
+
+The notebook here treats high-dimensional spectral flow cytometry data with tools
+built for single-cell transcriptomics — loading unmixed events into an `AnnData`
+object and applying PCA, UMAP, and Leiden clustering through `scanpy` — to
+characterise murine splenic immune populations across young and aged animals.
+
+## A note on what came next
+
+This repository is the **original, exploratory implementation**, written while the
+method was being developed. The approach was later rebuilt as a documented,
+installable tool with a graphical interface:
+
+> **CAFÉ** — Siam MHB, **Ali MA**, Vardaman D, Acharyya S, Patil M, Tyrrell DJ.
+> *CAFÉ: an integrated web app for high-dimensional analysis and visualization in spectral flow cytometry.*
+> Bioinformatics, 2025; 41(4). [10.1093/bioinformatics/btaf176](https://doi.org/10.1093/bioinformatics/btaf176)
+> — open access under CC BY 4.0.
+
+**If you want to run this kind of analysis on your own data, use CAFÉ.** It is
+maintained, tested, and does not require reading someone else's notebook. This
+repository is kept for provenance: it is the record of how the analysis in the
+2024 paper was actually performed.
+
+## Representative output
+
+| | |
+|---|---|
+| ![Leiden clusters on a UMAP embedding](figures/umap-leiden-clusters.png) | ![Cluster abundance in young and aged animals](figures/cluster-abundance-aged-vs-young.png) |
+| **Leiden clustering** of unmixed events, projected onto a UMAP embedding. | **Cluster abundance** compared between aged and young animals. |
+
+![Surface marker expression across the UMAP embedding](figures/marker-expression-umap.png)
+*Expression of sixteen surface markers across the embedding, used to assign cluster identities.*
+
+![Dot plot of marker expression per cluster with hierarchical clustering](figures/cluster-marker-dotplot.png)
+*Mean marker expression and the fraction of expressing cells per cluster, ordered by hierarchical clustering.*
+
+All figures were produced by the notebook in this repository.
+
+## Contents
+
+```
+notebooks/
+  spleen-spectral-flow-analysis.ipynb   Main analysis (66 code cells)
+  spleen-spectral-flow-analysis.py      Script export of the same code
+  spleen-spectral-flow-analysis.html    Rendered notebook with outputs
+figures/                                Selected figures produced by the notebook
+requirements.txt                        Python dependencies
+```
+
+The notebook is a working analysis record rather than a tutorial: it carries its
+outputs but no written narrative between cells. Read `spleen-spectral-flow-analysis.html`
+if you want to see the results without running anything.
+
+## Running it
+
+```bash
+git clone https://github.com/mdakkasali/Spectral_Flow_Cytometry_Data_Analysis.git
+cd Spectral_Flow_Cytometry_Data_Analysis
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+jupyter lab notebooks/spleen-spectral-flow-analysis.ipynb
+```
+
+### Data
+
+**The source data is not in this repository.** The notebook reads unmixed event
+tables exported from the spectral cytometer, which are too large to version here.
+Paths at the top of the notebook point at a local directory and must be changed to
+match your own files. For data availability, see the data availability statement in
+the paper, or contact the corresponding author.
+
+### Analysis steps
+
+1. Load unmixed event tables and assemble them into an `AnnData` object
+2. Scale and reduce dimensionality with PCA
+3. Build a neighbourhood graph and embed with UMAP
+4. Cluster with the Leiden algorithm
+5. Rank markers per cluster and assign population identities
+6. Compare cluster abundance between experimental groups
 
 ## Citation
 
-**Authors:** Donald Vardaman, III; Md Akkas Ali; Md Hasanul Banna Siam; Chase Bolding; Harrison Tidwell; Holly R Stephens; Mallikarjun Patil; Daniel J Tyrrell
+If this code is useful in your work, please cite the paper rather than the
+repository:
 
-**Journal:** The Journal of Immunology
+```bibtex
+@article{Vardaman2024SpectralFlow,
+  title   = {Development of a Spectral Flow Cytometry Analysis Pipeline for
+             High-Dimensional Immune Cell Characterization},
+  author  = {Vardaman, Donald and Ali, Md Akkas and Siam, Md Hasanul Banna and
+             Bolding, Chase and Tidwell, Harrison and Stephens, Holly R and
+             Patil, Mallikarjun and Tyrrell, Daniel J},
+  journal = {The Journal of Immunology},
+  volume  = {213},
+  number  = {11},
+  pages   = {1713--1724},
+  year    = {2024},
+  doi     = {10.4049/jimmunol.2400370}
+}
+```
 
-**Year:** 2024
+## Funding
 
-**Date:** December 1, 2024
-
-**DOI:** 10.4049/jimmunol.2400370
-
-**Open Access PDF:** [Link to PDF](https://academic.oup.com/jimmunol/article-pdf/213/11/1713/61496676/ji2400370.pdf)
-
----
-
-## Code Architecture
-
-### Repository Structure
-
-- **Jupyter Notebooks**: Interactive analysis workflows with step-by-step documentation
-  - `4_16_24_spleen_channel-Copy1.ipynb`: Main analysis notebook
-  - Additional supporting notebooks for specialized analyses
-- **Data Directory**: Organized storage for spectral flow cytometry datasets
-- **Utilities**: Helper scripts and functions for data processing
-- **requirements.txt**: Complete list of Python dependencies
-- **Documentation**: Comprehensive guides and method descriptions
-
-### Key Libraries and Packages
-
-- **Python**: Core programming language (version 3.x)
-- **pandas**: Data manipulation and analysis
-- **numpy**: Numerical computing and array operations
-- **scanpy**: Single-cell analysis toolkit adapted for flow cytometry
-- **matplotlib**: Data visualization and plotting
-- **seaborn**: Statistical data visualization
-- **scikit-learn**: Machine learning algorithms for clustering and dimensionality reduction
-- **flowio**: Flow cytometry file reading and processing
-- **anndata**: Annotated data matrices for high-dimensional analysis
-
-### Analysis Workflow
-
-1. **Data Loading**: Import spectral flow cytometry files (.fcs format)
-2. **Preprocessing**: Quality control, filtering, and initial data cleaning
-3. **Batch Correction**: Harmonization across experimental batches
-4. **Clustering**: Unsupervised identification of immune cell populations
-5. **Statistical Analysis**: Differential expression and population comparisons
-6. **Visualization**: Generation of publication-ready figures and plots
-
----
-
-## Methods
-
-The analysis pipeline reflects the methodological approach detailed in the publication:
-
-### 1. Sample Preparation
-
-- Tissue processing and cell isolation protocols
-- Antibody panel design and optimization
-- Sample staining and fixation procedures
-
-### 2. Spectral Flow Cytometry
-
-- Multi-parameter spectral flow cytometry data acquisition
-- High-dimensional immune cell characterization
-- Quality control measures for spectral data
-
-### 3. Data Processing
-
-- Raw data import and initial quality assessment
-- Compensation and spectral unmixing
-- Event filtering and debris removal
-
-### 4. Quality Control
-
-- Batch effect identification and assessment
-- Sample quality metrics evaluation
-- Data integrity validation
-
-### 5. Clustering Analysis
-
-- Unsupervised clustering algorithms (e.g., Leiden, Louvain)
-- Dimensionality reduction techniques (UMAP, t-SNE)
-- Cell population identification and annotation
-
-### 6. Statistical Analysis
-
-- Differential abundance testing
-- Marker expression analysis
-- Statistical significance assessment
-- Multiple comparison corrections
-
----
-
-## Usage Instructions
-
-### Prerequisites
-
-- Python 3.8 or higher
-- Jupyter Notebook or JupyterLab environment
-- Sufficient RAM (>= 8GB recommended for large datasets)
-- Required Python packages (see requirements.txt)
-
-### Installation
-
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/mdakkasali/Spectral_Flow_Cytometry_Data_Analysis.git
-   cd Spectral_Flow_Cytometry_Data_Analysis
-   ```
-
-2. Install required dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. Download the associated dataset from Figshare (link to be provided)
-
-### Reproduction Steps
-
-1. **Environment Setup**: Ensure all dependencies are installed
-2. **Data Preparation**: Place downloaded datasets in the appropriate data directory
-3. **Sequential Analysis**: Execute Jupyter notebooks in the recommended order:
-   - Start with the main analysis notebook
-   - Follow the annotated workflow step-by-step
-   - Examine intermediate results and quality control outputs
-4. **Parameter Customization**: Modify analysis parameters as needed for your specific dataset
-5. **Results Generation**: Generate figures and statistical outputs matching the publication
-
----
-
-## Acknowledgments and Funding
-
-This work was supported by the National Institutes of Health (NIH) through the following grants:
-
-- **National Institute of Allergy and Infectious Diseases (NIAID)**: R01AI134907 (D.J.T.)
-- **National Institute of General Medical Sciences (NIGMS)**: T32GM139804 (M.A.A.)
-- **National Cancer Institute (NCI)**: P30CA013148 (UAB Comprehensive Cancer Center Core Support)
-- **National Institute of Environmental Health Sciences (NIEHS)**: P30ES027797 (UAB Center for Free Radical Biology)
-
-We acknowledge the UAB Flow Cytometry Core Facility, supported by the UAB Comprehensive Cancer Center (P30CA013148), for technical assistance with spectral flow cytometry experiments. We thank the UAB High Performance Computing cluster for computational resources. We also acknowledge the contributions of the UAB Department of Pathology for institutional support and research infrastructure.
-
-Special thanks to all study participants and the research staff who made this work possible. We appreciate the collaborative environment fostered by the UAB Graduate Biomedical Sciences program and the Tyrrell Laboratory members for their valuable input and discussions throughout this project.
-
----
+The published study was supported by the National Institutes of Health
+(R00 AG068309, P30 AI027767, P30 AG050886) and the American Federation for Aging
+Research (A24063), as recorded in the publication's Crossref metadata.
 
 ## Contact
 
-**Md Akkas Ali, PhD Candidate**  
-Graduate Biomedical Sciences (GBS)  
-Department of Pathology – Molecular & Cellular  
-UAB | The University of Alabama at Birmingham  
-Office: PBMR2 574 | 901 19th St. South | Birmingham, AL 35205  
-P: +1 (205) 381-6106 | mali3@uab.edu
+**Md Akkas Ali** — PhD Candidate, Graduate Biomedical Sciences
+Department of Pathology, University of Alabama at Birmingham
+[mali3@uab.edu](mailto:mali3@uab.edu)
 
-**Connect with me:**
-- [Google Scholar](https://scholar.google.com/citations?user=XXXXXXXX)
-- [LinkedIn](https://www.linkedin.com/in/md-akkas-ali)
-- [X (Twitter)](https://twitter.com/mdakkasali)
-- [Personal Website](https://mdakkasali.github.io)
-- [Tyrrell Lab](https://www.uab.edu/medicine/tyrrell-lab)
+[Website](https://mdakkasali.github.io/) ·
+[Google Scholar](https://scholar.google.com/citations?user=-qIZ0AgAAAAJ&hl=en) ·
+[ORCID](https://orcid.org/0000-0002-3626-3393) ·
+[Tyrrell Lab](https://sites.uab.edu/tyrrelllab/)
 
-**For questions regarding this repository or publication:**
-- **Technical questions**: Create an issue in this GitHub repository
-- **Methodological inquiries**: Contact the corresponding author
-- **Collaboration opportunities**: Email mali3@uab.edu
-
-We encourage users to report bugs, suggest improvements, and contribute to the ongoing development of this analysis pipeline.
-
----
+Questions about the code are best raised as an
+[issue](https://github.com/mdakkasali/Spectral_Flow_Cytometry_Data_Analysis/issues).
 
 ## License
 
-This repository supports open science and reproducible research in immunology and flow cytometry analysis. Please refer to the LICENSE file for specific usage terms.
-
----
-
-*This repository provides comprehensive tools for spectral flow cytometry analysis, enabling researchers to reproduce the methods described in our publication and apply them to their own high-dimensional immune profiling studies.*
+Released under the [MIT License](LICENSE). The code is covered by this license;
+the associated publication is subject to the publisher's own terms.

@@ -1,0 +1,12 @@
+.DS_Store
+._*
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Raw and intermediate data are not tracked
+*.fcs
+*.h5ad
+data/
