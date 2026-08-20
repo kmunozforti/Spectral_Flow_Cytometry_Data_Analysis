@@ -28,8 +28,10 @@ installable tool with a graphical interface:
 > *CAFÉ: an integrated web app for high-dimensional analysis and visualization in spectral flow cytometry.*
 > Bioinformatics, 2025; 41(4). [10.1093/bioinformatics/btaf176](https://doi.org/10.1093/bioinformatics/btaf176)
 > — open access under CC BY 4.0.
+>
+> **Source code:** [github.com/mhbsiam/cafe](https://github.com/mhbsiam/cafe)
 
-**If you want to run this kind of analysis on your own data, use CAFÉ.** It is
+**If you want to run this kind of analysis on your own data, use [CAFÉ](https://github.com/mhbsiam/cafe).** It is
 maintained, tested, and does not require reading someone else's notebook. This
 repository is kept for provenance: it is the record of how the analysis in the
 2024 paper was actually performed.
