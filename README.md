@@ -26,7 +26,7 @@ installable tool with a graphical interface:
 
 > **CAFÉ** — Siam MHB, **Ali MA**, Vardaman D, Acharyya S, Patil M, Tyrrell DJ.
 > *CAFÉ: an integrated web app for high-dimensional analysis and visualization in spectral flow cytometry.*
-> Bioinformatics, 2025; 41(4). [10.1093/bioinformatics/btaf176](https://doi.org/10.1093/bioinformatics/btaf176)
+> Bioinformatics, 2025; 41(6): btaf176. [10.1093/bioinformatics/btaf176](https://doi.org/10.1093/bioinformatics/btaf176)
 > — open access under CC BY 4.0.
 >
 > **Source code:** [github.com/mhbsiam/cafe](https://github.com/mhbsiam/cafe)
